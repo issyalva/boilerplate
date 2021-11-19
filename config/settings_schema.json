@@ -1,0 +1,34 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "AvexTheme",
+    "theme_version": "2.0",
+    "theme_author": "Sanjar S",
+    "theme_documentation_url": "https://github.com/avex-designs/avex-boilerplate",
+    "theme_support_email": "sanjar@avexdesigns.com"
+  },
+  {
+    "name": "Base Settings",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Theme settings allow designers to provide an easy way for any user to customize the look and feel of their shop without having to delve into HTML or CSS code. Please see our [help page on theme settings](http:\/\/docs.shopify.com\/themes\/theme-templates\/settings) to learn more about how you can make your theme customizable."
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color",
+        "default": "#202020"
+      }
+    ]
+  },
+  {
+    "name": "Example setting",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Example option"
+      }
+    ]
+  }
+]

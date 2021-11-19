@@ -1,0 +1,24 @@
+@import "../partials/form.scss";
+
+.contact-form {
+    form {
+        margin-top: 2rem;
+    }
+    &__button {
+        margin: 1.5rem 0;
+        max-width: 200px;
+    }
+    &__fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        .field {
+            &.half-width {
+                width: calc(50% - 1rem);
+            }
+        }
+        .field-inner {
+            margin: 1rem;
+        }
+    }
+}

@@ -1,0 +1,3 @@
+{% assign stylesheetName = name | append: ".min.css" %}
+<link rel="preload" href="{{ stylesheetName | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ stylesheetName | asset_url }}"></noscript>

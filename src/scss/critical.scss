@@ -1,0 +1,231 @@
+// RESET CSS
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+ol[class],
+ul[class] {
+    padding: 0;
+}
+blockquote,
+body,
+dd,
+dl,
+figcaption,
+figure,
+h1,
+h2,
+h3,
+h4,
+li,
+ol[class],
+p,
+ul[class] {
+    margin: 0;
+}
+body {
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+}
+ol[class],
+ul[class] {
+    list-style: none;
+}
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+img {
+    max-width: 100%;
+    display: block;
+}
+article > * + * {
+    margin-top: 1em;
+}
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0s !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+html {
+    font-family: $font_main_balance;
+    line-height: 136%;
+    font-weight: 300;
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+a {
+    color: $color-black;
+}
+
+p a {
+    color: inherit;
+}
+
+// Headers
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4 {
+    font-family: $font_extended_balance;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+h5,
+.h5 {
+    font-family: $font_extended_balance;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+h6,
+.h6 {
+    font-family: $font_main_balance;
+    text-transform: uppercase;
+    font-weight: normal;
+}
+
+h1,
+.h1 {
+    font-size: rem(88px);
+    line-height: 95%;
+}
+h2,
+.h2 {
+    font-size: rem(60px);
+    line-height: 95%;
+}
+h3,
+.h3 {
+    font-size: rem(40px);
+    line-height: rem(48px);
+}
+h4,
+.h4 {
+    font-size: rem(24px);
+    line-height: rem(29px);
+}
+h5,
+.h5 {
+    font-size: rem(16px);
+    line-height: rem(19px);
+}
+h6,
+.h6,
+.small {
+    font-size: rem(14px);
+    line-height: rem(17px);
+}
+
+@include media(tabletL) {
+    h1,
+    .h1 {
+        font-size: rem(72px);
+    }
+    h2,
+    .h2 {
+        font-size: rem(40px);
+    }
+    h4,
+    .h4 {
+        font-size: rem(20px);
+    }
+}
+@include media(tablet) {
+    h1,
+    .h1 {
+        font-size: rem(48px);
+    }
+    h3,
+    .h3 {
+        font-size: rem(32px);
+        line-height: 1.186;
+    }
+    h4,
+    .h4 {
+        font-size: rem(18px);
+    }
+}
+
+.container-max {
+    margin: 0 auto;
+}
+.container {
+    @extend .container-max;
+    padding: 0 rem(40px);
+
+    @include media(tabletL) {
+        padding: 0 rem(24px);
+    }
+
+    @include media(mobile) {
+        padding: 0 rem(16px);
+    }
+}
+.container-min {
+    max-width: 982px;
+    padding: 0 2.5rem;
+    margin: 0 auto;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+.visually-disabled {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+.grid-container {
+    display: grid;
+    align-items: center;
+    grid-auto-columns: 1fr;
+
+    &--w-gaps {
+        grid-column-gap: rem(16px);
+    }
+}
+.grid-item {
+    grid-row: 1;
+}
+.hidden {
+    display: none !important;
+}
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+.text-center {
+    text-align: center !important;
+}
+.text-left {
+    text-align: left !important;
+}
+.text-right {
+    text-align: right !important;
+}
+

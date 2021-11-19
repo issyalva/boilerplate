@@ -1,0 +1,59 @@
+.products-carousel {
+    overflow: hidden;
+    &__title {
+        text-align: center;
+        margin: rem(60px) rem(20px) rem(20px);
+    }
+    &__button {
+        margin: rem(40px) rem(20px) rem(40px);
+        text-align: center;
+        @include media(tablet) {
+            margin: rem(16px) rem(16px);
+        }
+    }
+    .products-carousel-swiper{
+        position: relative;
+    }
+    @include media(tablet){
+        .swiper-slide{
+            flex: 0 0 50%;
+        }
+    }
+   
+    .swiper-button {
+        position: absolute;
+        right: 1rem;
+        top: 33%;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        &::after {
+            display: none;
+        }
+        svg {
+            fill: $color-black;
+            @include media(tablet) {
+                width: 24px;
+            }
+        }
+        &.swiper-button-disabled {
+            svg {
+                fill: none;
+            }
+        }
+        @include media(tablet) {
+            top: 45%;
+        }
+        @include media(mobile) {
+            top: 35%;
+        }
+    }
+    .swiper-button-prev {
+        left: 1rem;
+        svg {
+            transform: rotate(180deg);
+        }
+    }
+}

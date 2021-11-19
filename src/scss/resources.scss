@@ -1,0 +1,45 @@
+@import "~sass-rem/rem";
+
+
+@mixin media($breakpoint) {
+  @if $breakpoint==desktopS {
+    @media only screen and (max-width: 1150px) {
+      @content;
+    }
+  }
+  @if $breakpoint==tabletL {
+    @media only screen and (max-width: 991px) {
+      @content;
+    }
+  }
+  @if $breakpoint==tablet {
+    @media only screen and (max-width: 767px) {
+      @content;
+    }
+  }
+  @if $breakpoint==mobile {
+    @media only screen and (max-width: 479px) {
+      @content;
+    }
+  }
+  @if $breakpoint==mobileS {
+    @media only screen and (max-width: 374px) {
+      @content;
+    }
+  }
+}
+
+// Primary Colors
+$color-black: #000;
+$color-light-grey: #f4f4f4;
+$color-grey: #c4c4c4;
+$color-dark-grey: #d9d9d9;
+$color-white: #fff;
+
+// System Colors
+$color-red: #e31818;
+$color-green: #00c236;
+
+// Font family
+$font_main_balance: "Futura PT Light", sans-serif;
+$font_extended_balance: "Futura PT Light", sans-serif;

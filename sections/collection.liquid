@@ -1,0 +1,271 @@
+{% render 'stylesheet', name: 'collection' %}
+<script src="{{ 'collection-js.min.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid 
+  assign totalProducts = collection.all_products_count
+  if collection.all_products_count > collection.products_count
+    assign totalProducts = collection.products_count
+  endif
+  -%}
+
+
+
+<div class="collection-page">
+  <section class="collection-page__header">
+    <div class="container" style="color: {{ section.settings.collection_text_color }};">
+      <div class="breadcrumbs">
+        {% render 'breadcrumbs' %}
+      </div>
+      <h1 class="title">{{- collection.title | escape -}}</h1>
+      {%- if section.settings.show_collection_description -%}
+        <div class="description">{{ collection.description }}</div>
+      {%- endif -%}
+      <span id="ProductsCount">
+        {{ totalProducts }} products
+      </span>
+    </div>
+  </section>
+
+ 
+  <section class="collection-page__body">
+    <div class="container">
+      <div class="filters-panel grid-container">
+        <div class="grid-item">
+          <button class="filter-toggle-button" data-filters-toggler>+ Filters</button>
+        </div>
+        <div class="grid-item">
+          {%- if section.settings.enable_sorting -%}
+            <div class="sort-imitator">
+              <label for="SortBy-imitator">Sort by: </label>
+              <select id="SortBy-imitator">
+                  {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+                  {% for option in collection.sort_options %}
+                      <option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+                      {{ option.name | escape }}
+                      </option>
+                  {% endfor %}
+              </select>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="collection-products">
+        <div class="mobile-overlay" data-mobile-filter-close></div>
+        <aside class="collection-products__filter" data-filters>
+          <div class="mobile-close-wrapper">
+            <button class="mobile-filter-close" data-mobile-filter-close>{% render 'icon-close-small' %}</button>
+          </div>
+          <filter-reset class="reset-all"><a href="{{ collection.url }}">clear all</a></filter-reset>
+          <filter-and-sort-form>
+            <form class="filter" id="FiltersForm">
+              {%- if section.settings.enable_sorting -%}
+              <select id="SortBy" name="sort_by" class="hidden">
+                  {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+                  {% for option in collection.sort_options %}
+                      <option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+                      {{ option.name | escape }}
+                      </option>
+                  {% endfor %}
+              </select>
+              {%- endif -%}
+              {%- for filter in collection.filters -%}
+                {%- assign total_active_values = total_active_values | plus: filter.active_values.size -%}
+                {% case filter.type %}
+                {% when 'list' %}
+                  <div class="filter__item type-list js-filter" data-index="{{ forloop.index }}">
+                    <div class="summary">
+                      <div class="title">{{ filter.label | escape }} {% if filter.active_values.size > 0 %}({{ filter.active_values.size }}){% endif %}</div>
+                      {% if filter.active_values.size > 0 %}<filter-reset class="reset"><a href="{{ filter.url_to_remove }}">clear</a></filter-reset>{% endif %}
+                    </div>
+                    <div class="details">
+                      <ul class="list" role="list">
+                        {%- for value in filter.values -%}
+                          <li>
+                            <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="filter-checkbox{% if value.count == 0 and value.active == false %} filter-checkbox--disabled{% endif %}">
+                              <input type="checkbox"
+                                name="{{ value.param_name }}"
+                                value="{{ value.value }}"
+                                id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                                {% if value.active %}checked{% endif %}
+                                {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                              >
+
+                              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                                <rect width="16" height="16" stroke="currentColor" fill="none" stroke-width="1"></rect>
+                              </svg>
+
+                              <svg class="icon icon-checkmark"
+                                width="11"
+                                height="7"
+                                viewBox="0 0 11 7"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+
+                                <path d="M1.5 3.5L2.83333 4.75L4.16667 6L9.5 1"
+                                  stroke="currentColor"
+                                  stroke-width="1.75"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                              </svg>
+
+                              </svg>
+                              {{ value.label | escape }} ({{ value.count }})
+                            </label>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  </div>
+                {% when 'price_range' %}
+                  {% liquid
+                    assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,SEK,TRY,UYU,VES,VND' | split: ','
+                    assign uses_comma_decimals = false
+                    if currencies_using_comma_decimals contains cart.currency.iso_code
+                      assign uses_comma_decimals = true
+                    endif
+                  %}
+                  <div class="filter__item type-price-range js-filter" data-index="{{ forloop.index }}">
+                    <div class="summary">
+                      <div class="title">{{ filter.label | escape }}</div>
+                      {% if filter.active %}<filter-reset class="reset"><a href="{{ filter.url_to_remove }}">clear</a></filter-reset>{% endif %}
+                    </div>
+                    <div class="details">
+                      <div class="price">
+                        <div class="field">
+                          <label class="field__label" for="Filter-{{ filter.label | escape }}-GTE">from:</label>
+                          <input class="field__input"
+                            name="{{ filter.min_value.param_name }}"
+                            id="Filter-{{ filter.label | escape }}-GTE"
+                            {%- if filter.min_value.value -%}
+                              {%- if uses_comma_decimals -%}value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"{%- else -%}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                            {%- endif -%}
+                            type="number"
+                            placeholder="0"
+                            min="0"
+                            {%- if uses_comma_decimals -%}max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"{%- else -%}max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"{% endif %}
+                          >
+                          </input>
+                          
+                        </div>
+                        <span class="range-sign">-</span>
+                        <div class="field">
+                          <label class="field__label" for="Filter-{{ filter.label | escape }}-LTE">to:</label>
+                          <input class="field__input"
+                            name="{{ filter.max_value.param_name }}"
+                            id="Filter-{{ filter.label | escape }}-LTE"
+                            {%- if filter.max_value.value -%}{%- if uses_comma_decimals -%}value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"{%- else -%}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                            {%- endif -%}
+                            type="number"
+                            min="0"
+                            {%- if uses_comma_decimals -%}
+                              placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                              max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                            {%- else -%}
+                              placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                            {% endif %}
+                          >
+                          </input>
+                        
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endcase %}
+              {%- endfor -%}
+            </form>
+          </filter-and-sort-form>
+        </aside>
+        <div class="collection-products__listing" id="ProductsList" data-id="{{ section.id }}">
+          {%- if collection.products.size == 0 -%}
+          <div class="products-list no-products" data-products-list data-productsCount="{{ totalProducts }} products">
+            NO PRODUCTS
+          </div>
+          {%- else -%}
+          <div class="products-list" data-products-list data-productsCount="{{ totalProducts }} products">
+            <div class="loading-overlay"></div> 
+            {% paginate collection.products by 8 %}
+              <div class="products-list__products">
+                {% for product in collection.products %}
+                  {%- render 'product-card' product: product, hideHover: section.settings.show_secondary_image -%}
+                {% endfor %}
+              </div>
+              <div class="products-list__pagination">
+                {{ paginate | default_pagination }}
+              </div>
+            {% endpaginate %}
+          </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</div>
+
+{% schema %}
+{
+"name": "Product Collection",
+"settings": [
+  {
+    "type": "range",
+    "id": "products_per_page",
+    "min": 8,
+    "max": 24,
+    "step": 4,
+    "default": 16,
+    "label": "Products per page"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_collection_description",
+    "default": false,
+    "label": "Show Collection Description"
+  },
+  {
+    "type": "color",
+    "id": "collection_text_color",
+    "label": "Text Color",
+    "default" : "#000"
+  },
+  {
+    "type": "header",
+    "content": "Product details"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_secondary_image",
+    "default": false,
+    "label": "Show hover image"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_vendor",
+    "default": false,
+    "label": "Show vendor"
+  },
+  {
+    "type": "header",
+    "content": "Filter and Sorting"
+  },
+  {
+    "type": "checkbox",
+    "id": "enable_filtering",
+    "default": true,
+    "label": "Enable Filters"
+  },
+  {
+    "type": "checkbox",
+    "id": "enable_sorting",
+    "default": true,
+    "label": "Enable Sorting"
+  },
+  {
+    "type": "link_list",
+    "id": "tag_filters",
+    "label": "Tag Filters"
+  }
+]
+}
+{% endschema %}

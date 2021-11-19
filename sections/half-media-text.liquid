@@ -1,0 +1,124 @@
+{%- if section.settings.half_image != blank or section.settings.half_video != blank -%}
+{%- render 'stylesheet', name: 'half-media-text' -%}
+
+<section class="half-media-text">
+  <div class="container-max">
+    <div class="grid-container">
+      <div class="grid-item half-media-text__media" {% if section.settings.half_image_p %}style="order: {{ section.settings.half_image_p }}"{% endif %}>
+        {%- if section.settings.half_video != blank -%}
+          <video class="video" crossorigin="anonymous" autoplay playsinline muted loop poster="{{ section.settings.half_image | img_url: 'master' }}" preload="none" type="video/mp4" src="{{ section.settings.half_video }}"></video>
+        {%- else -%}
+          {%- render 'image', image: section.settings.half_image, imageClass: 'cover' -%}
+        {%- endif -%}
+      </div>  
+      <div class="grid-item half-media-text__body" style="background-color:{{ section.settings.half_bg_color }};">
+        <div class="half-media-text__content" style="color: {{ section.settings.half_text_color }};">
+          {%- assign hTag = 'h2' -%}
+          {%- if section.settings.half_title_tag -%}
+            {% assign hTag = section.settings.half_title_tag -%}
+          {%- endif -%}
+          <h2 class="{{ hTag }} half-media-text__title">{{ section.settings.half_title }}</h2>
+          {%- if section.settings.half_text != blank -%}
+            <div class="half-media-text__text">
+              {{- section.settings.half_text -}}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.half_b_text != blank -%}
+            <div>
+              <a href="{{ section.settings.half_b_url }}" class="half-media-text__link secondary-button" style="--sec-color: {% if section.settings.half_text_color != blank %}{{ section.settings.half_text_color }}{% else %}#fff{% endif %}">
+                {{- section.settings.half_b_text -}}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% javascript %}
+  // The content from {% javascript %} tags across all sections is concatenated into a single file by Shopify, and then injected into the theme through the content_for_header global Liquid object. 
+  console.log('https://shopify.dev/themes/architecture/sections/section-assets#javascript')
+{% endjavascript %}
+
+{% schema %}
+{
+    "name": "50/50 Media & Text",
+      "settings": 
+          [
+              {
+                  "type": "header",
+                  "content": "Media Settings"
+              },
+              {
+                "type": "image_picker",
+                "id": "half_image",
+                "label": "Image"			
+              },
+              {
+                "type": "select",
+                "id": "half_image_p",
+                "options": [
+                   { "value": "2", "label": "Right"},
+                   { "value": "1", "label": "Left"}
+                ],
+                "label": "Image Position alignment",
+                "default": "1"
+              },
+              {
+                "type": "text",
+                "id": "half_video",
+                "label": "Video Url (mp4)"			
+              },
+              {
+                  "type": "text",
+                  "id": "half_title",
+                  "label": "Title"
+              },
+              {
+                "type": "radio",
+                "id": "half_title_tag",
+                "options": [
+                   { "value": "h2", "label": "Style 1"},
+                   { "value": "h3", "label": "Style 2"}
+                ],
+                "label": "Title Style"
+             },
+              {
+                  "type": "richtext",
+                  "id": "half_text",
+                  "label": "Text"
+              },
+              {
+                  "type": "text",
+                  "id": "half_b_text",
+                  "label": "Button Text",
+                  "default": "Shop Now"			
+              },
+              {
+                  "type": "url",
+                  "id": "half_b_url",
+                  "label": "Button Url"	
+              },
+              {
+                "type": "color",
+                "id": "half_text_color",
+                "label": "Text Color",
+                "default" : "#000"
+              },
+              {
+                  "type": "color",
+                  "id": "half_bg_color",
+                  "label": "Text Background Color",
+                  "default": "#fff"
+              }
+          ],
+          "presets": [
+              {
+                  "name": "50/50 Media & Text",
+                  "category": "Home Page"
+              }
+          ]
+  } 
+{% endschema %}

@@ -1,0 +1,16 @@
+{%- comment -%}
+	1. generate image assets on https://realfavicongenerator.net/
+	2. upload rendered files into Files
+	3. update site manifest and browser config
+	4. update hex colors in meta links as needed
+{%- endcomment -%}
+
+<link rel="apple-touch-icon" sizes="144x144" href="{{ 'apple-touch-icon.png' | asset_url | split: '?' | first }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon-32x32.png' | asset_url | split: '?' | first }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ 'favicon-16x16.png' | asset_url | split: '?' | first }}">
+<link rel="manifest" href="{{ 'site.webmanifest' | asset_url | split: '?' | first }}">
+<link rel="mask-icon" href="{{ 'safari-pinned-tab.svg' | asset_url | split: '?' | first }}" color="#0c1b2a">
+<link rel="shortcut icon" href="{{ 'favicon.ico' | asset_url | split: '?' | first }}">
+<meta name="msapplication-TileColor" content="#f8f7f6">
+<meta name="msapplication-config" content="{{ 'browserconfig.xml' | asset_url | split: '?' | first }}">
+<meta name="theme-color" content="#ffffff">
