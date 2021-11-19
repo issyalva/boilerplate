@@ -1,0 +1,30 @@
+# ignore all files starting with . or ~
+.*
+~*
+
+/node_modules
+/config.yml
+/config/settings_data.json
+
+#build files to be compiled locally
+/assets/common.min.css
+/assets/common.min.js
+
+# ignore packaged files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# track these files, if they exist
+!.gitignore
+!.editorconfig
+!README.md
+!CHANGELOG.md
+!composer.json
+
+avextheme.zip
